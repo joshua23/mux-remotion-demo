@@ -10,7 +10,7 @@ export const States: React.FC = () => {
   const maxDatasetValue = data[0].data.slice(0, 5).sort((a, b) => b.value - a.value)[0].value;
 
   return (
-    <Layout bodyClass="bg-mux-yellow" title="Heatmap: top 5 states by overall views" timeframe={data[0].timeframe}>
+    <Layout bodyClass="bg-mux-yellow" title="热力图：观看次数最多的前5个州" timeframe={data[0].timeframe}>
       <div className="grid" style={{ gridTemplateColumns: "2fr 1fr" }}>
         <MapChart data={data[0].data} />
         <div>

@@ -36,18 +36,18 @@ export const Overall: React.FC = () => {
   const totalWatchTime = getCurrentValue(driver, data[0].data.total_watch_time);
 
   return (
-    <Layout bodyClass="bg-mux-pink" title="Overall stats" timeframe={data[0].timeframe} >
+    <Layout bodyClass="bg-mux-pink" title="总体统计数据" timeframe={data[0].timeframe} >
       <Stat>
         <div>
           <Value>{formatNumber(totalViews)}</Value>
-          <Label>Total views</Label>
+          <Label>总观看次数</Label>
         </div>
         <Trend border color="pink" pastMonthValue={data[0].data.total_views} previousMonthValue={data[1].data.total_views} />
       </Stat>
       <Stat>
         <div>
           <Value>{formatNumber(Math.floor(totalWatchTime / 10000))}</Value>
-          <Label>Minutes watched</Label>
+          <Label>观看分钟数</Label>
         </div>
         <Trend border color="pink" pastMonthValue={data[0].data.total_watch_time} previousMonthValue={data[1].data.total_watch_time} />
       </Stat>

@@ -25,7 +25,7 @@ export const VideoTitles: React.FC = () => {
   const maxDatasetViews = data[0].data.sort((a, b) => b.views - a.views)[0].views;
 
   return (
-    <Layout bodyClass="bg-mux-lavendar" title="Top 10 videos by viewership" timeframe={data[0].timeframe} >
+    <Layout bodyClass="bg-mux-lavendar" title="观看次数最多的前10个视频" timeframe={data[0].timeframe} >
       <div className="grid grid-cols-2 gap-x-10">
         <div>
           {data[0].data.slice(0, 5).map((video_title, i) => (

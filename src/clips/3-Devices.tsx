@@ -18,6 +18,13 @@ const DEVICE_LOOKUP = {
   tablet: Tablet
 }
 
+const DEVICE_NAME_CN = {
+  phone: "手机",
+  tv: "电视",
+  desktop: "桌面电脑",
+  tablet: "平板电脑"
+}
+
 const Stat = ({ index, children }: { index: number, children: React.ReactNode }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -66,7 +73,7 @@ export const Devices: React.FC = () => {
   });
 
   return (
-    <Layout bodyClass="bg-mux-green" title="Views by device" timeframe={data[0].timeframe} >
+    <Layout bodyClass="bg-mux-green" title="按设备分类的观看数据" timeframe={data[0].timeframe} >
       <div className="grid grid-rows-5">
         {data[0].data.map((device, i) => {
           const Icon = DEVICE_LOOKUP[device.field];
@@ -80,7 +87,7 @@ export const Devices: React.FC = () => {
               </div>
               <Measure index={i} value={(device.views / leadingDeviceViews) * 100} />
               <Value>{formatNumber(totalViews)}</Value>
-              <Label>{device.field === "tv" ? "TV" : device.field}</Label>
+              <Label>{DEVICE_NAME_CN[device.field]}</Label>
               <div className="flex justify-end -mt-4" style={{ width: "550px" }}>
                 <Trend border color="green" pastMonthValue={device.views} previousMonthValue={previousMonthViews} />
               </div>

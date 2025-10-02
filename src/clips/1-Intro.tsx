@@ -15,13 +15,13 @@ export const Intro: React.FC = () => {
   return (
     <Layout background="white">
       <div className="border-b border-mux-gray mt-20 pb-8">
-        <h1 className="text-mux-black leading-none tracking-tight text-3xl" style={{ opacity: titleOpacity, transform: `translateY(${titleY}px)` }}>Video stats overview</h1>
+        <h1 className="text-mux-black leading-none tracking-tight text-3xl" style={{ opacity: titleOpacity, transform: `translateY(${titleY}px)` }}>视频数据概览</h1>
         <h2 className="text-mux-gray mb-48 tracking-tight text-3xl" style={{ opacity: subtitleOpacity, transform: `translateY(${subtitleY}px)` }}>
-          {format(new Date(timeframe[0] * 1000), 'MMM. dd')} – {format(new Date(timeframe[1] * 1000), 'MMM. dd, yyyy')}
+          {format(new Date(timeframe[0] * 1000), 'yyyy年MM月dd日')} – {format(new Date(timeframe[1] * 1000), 'yyyy年MM月dd日')}
         </h2>
       </div>
       <div>
-        <h2 className="font-mono text-mux-gray uppercase text-base my-14 tracking-widest">Powered by Mux Data</h2>
+        <h2 className="font-mono text-mux-gray uppercase text-base my-14 tracking-widest">由 Mux Data 提供支持</h2>
         <div className="grid grid-cols-5 h-4">
           <div className="bg-mux-pink" />
           <div className="bg-mux-green" />

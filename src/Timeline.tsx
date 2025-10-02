@@ -4,7 +4,7 @@ import { Overall } from './clips/2-Overall';
 import { Devices } from './clips/3-Devices';
 import { VideoTitles } from './clips/4-VideoTitles';
 import { States } from './clips/5-States';
-import { Browsers } from './clips/6-Browsers';
+// import { Browsers } from './clips/6-Browsers';
 import { Outro } from './clips/7-Outro';
 import { Audio } from "remotion";
 import audio from "./static/audio.mp3";
@@ -43,9 +43,9 @@ export const Timeline: React.FC = () => {
           <Series.Sequence name="States" durationInFrames={180}>
             <States />
           </Series.Sequence>
-          <Series.Sequence name="Browsers" durationInFrames={180}>
+          {/* <Series.Sequence name="Browsers" durationInFrames={180}>
             <Browsers />
-          </Series.Sequence>
+          </Series.Sequence> */}
           <Series.Sequence name="Outro" durationInFrames={146}>
             <Outro />
           </Series.Sequence>
