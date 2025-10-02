@@ -1,59 +1,59 @@
 # mux-remotion-demo
 
-This repository contains an demonstration of how to create a video using Mux Data and Remotion.
+本代码仓库演示如何使用 Mux Data 和 Remotion 创建视频。
 
-Make sure to set your Mux access token and secret key!
+请确保设置你的 Mux 访问令牌和密钥！
 
-Copy the `.env.example` file to a new file called `.env` and add your keys there.
+复制 `.env.example` 文件为新文件 `.env` 并在其中添加你的密钥。
 
-You'll also need to install ffmpeg to render your video locally. You can do that on MacOS with homebrew by running `brew install ffmpeg`. This will take a few minutes to download and install, so now is a good time to go check your mail or do a few laps around the block.
+你还需要安装 ffmpeg 以在本地渲染视频。在 macOS 上可以通过 homebrew 运行 `brew install ffmpeg` 来安装。这将需要几分钟下载和安装，现在是查看邮件或绕街区走几圈的好时机。
 
-This demo uses `date-fns` to help easily calculate timeframes for which we'd like to pull stats from.
+本演示使用 `date-fns` 来帮助轻松计算我们想要提取统计数据的时间范围。
 
-### Notes
+### 注意事项
 
-- Setting a `durationInFrames` prop on the `Sequence` component in the `Timeline` specifies how long each component should display for.
+- 在 `Timeline` 中的 `Sequence` 组件上设置 `durationInFrames` 属性可以指定每个组件应显示多长时间。
 
-## Commands
+## 命令
 
-**Start Preview**
+**启动预览**
 
 ```console
 npm start
 ```
 
-**Render video**
+**渲染视频**
 
 ```console
 npm run build
 ```
 
-**Server render demo**
+**服务端渲染演示**
 
 ```console
 npm run server
 ```
 
-See [docs for server-side rendering](https://www.remotion.dev/docs/ssr) here.
+服务端渲染文档请参阅 [这里](https://www.remotion.dev/docs/ssr)。
 
-**Upgrade Remotion**
+**升级 Remotion**
 
 ```console
 npm run upgrade
 ```
 
-## Docs
+## 文档
 
-Get started with Remotion by reading the [fundamentals page](https://www.remotion.dev/docs/the-fundamentals).
+通过阅读 [基础页面](https://www.remotion.dev/docs/the-fundamentals) 开始使用 Remotion。
 
-## Help
+## 帮助
 
-Remotion provides help [on our Discord server](https://discord.gg/6VzzNDwUwV).
+Remotion 在 [我们的 Discord 服务器](https://discord.gg/6VzzNDwUwV) 上提供帮助。
 
-## Issues
+## 问题
 
-Found an issue with Remotion? [File an issue here](https://github.com/remotion-dev/remotion/issues/new).
+发现 Remotion 的问题？[在这里提交问题](https://github.com/remotion-dev/remotion/issues/new)。
 
-## License
+## 许可证
 
-Notice that for some entities a company license is needed. Read [the terms here](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md).
+请注意，某些实体需要公司许可证。请阅读 [此处的条款](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md)。
