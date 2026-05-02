@@ -1,91 +1,63 @@
+/**
+ * Hierarchy — Dalio 风格层级帧
+ * Joshua 在顶部中央，4 个家人/业务节点向下扇形展开
+ */
 import React from 'react';
-import { SceneCard } from '../components/SceneCard';
-import { StackBuilder } from '../components/StackBuilder';
+import { AbsoluteFill, useCurrentFrame, interpolate, Easing } from 'remotion';
+import { PaperBackground } from '../components/PaperBackground';
+import { StickFigure } from '../components/StickFigure';
+import { SnapIcon } from '../components/SnapIcon';
 import { DrawPath } from '../components/DrawPath';
-import { COLORS, FONTS } from '../theme';
+import { COLORS, FONTS, EASING } from '../theme';
 import type { OutlineCard } from '../../scripts/parse-gamma';
-
-interface HierarchyNode {
-  readonly label: string;
-  readonly value?: string;
-}
 
 interface HierarchyProps {
   readonly card: OutlineCard;
-  readonly rootLabel?: string;
-  readonly children?: HierarchyNode[];
 }
 
-const DEFAULT_CHILDREN: HierarchyNode[] = [
-  { label: '餐饮外卖', value: '24%' },
-  { label: '电商购物', value: '18%' },
-  { label: '交通出行', value: '12%' },
-  { label: '住房居家', value: '10%' },
-  { label: '其他', value: '36%' },
-];
+export const Hierarchy: React.FC<HierarchyProps> = ({ card }) => {
+  const frame = useCurrentFrame();
+  const titleOp = interpolate(frame, [10, 30], [0, 1], { extrapolateRight: 'clamp', easing: Easing.bezier(...EASING.snapIn) });
 
-export const Hierarchy: React.FC<HierarchyProps> = ({
-  card,
-  rootLabel = '总支出',
-  children = DEFAULT_CHILDREN,
-}) => {
+  const childCharacters = [
+    { c: 'wife' as const, label: 'NaNa ¥61,503', delay: 35 },
+    { c: 'family-female' as const, label: '燕燕 ¥20,000', delay: 50 },
+    { c: 'family-male' as const, label: '龙 ¥5,000', delay: 65 },
+    { c: 'business' as const, label: '皆柏 ¥10,676', delay: 80 },
+  ];
+
   return (
-    <SceneCard title={card.title}>
-      <div style={{ position: 'relative', paddingTop: 40 }}>
-        {/* Root node */}
-        <div style={{ textAlign: 'center', marginBottom: 40 }}>
-          <div
-            style={{
-              display: 'inline-block',
-              backgroundColor: COLORS.accent.blue,
-              color: '#fff',
-              borderRadius: 8,
-              padding: '16px 40px',
-              fontFamily: FONTS.heading,
-              fontSize: 28,
-            }}
-          >
-            {rootLabel}
-          </div>
-        </div>
+    <AbsoluteFill>
+      <PaperBackground />
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'flex-start', paddingTop: 80, opacity: titleOp }}>
+        <p style={{ fontFamily: FONTS.heading, fontSize: 44, color: COLORS.ink, margin: 0, fontWeight: 600 }}>{card.title}</p>
+      </AbsoluteFill>
 
-        {/* Connector lines */}
-        <DrawPath
-          d="M 540,0 L 540,40"
-          strokeColor={COLORS.ink}
-          startFrame={0}
-          width={1080}
-          height={40}
-        />
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'flex-start', paddingTop: 200 }}>
+        <SnapIcon delay={5}><StickFigure character="joshua" label="Joshua" size={200} /></SnapIcon>
+      </AbsoluteFill>
 
-        {/* Children nodes */}
-        <StackBuilder
-          items={children.map((child, i) => (
-            <div
-              key={i}
-              style={{
-                backgroundColor: COLORS.paper,
-                border: `2px solid ${COLORS.ink}`,
-                borderRadius: 8,
-                padding: '12px 20px',
-                fontFamily: FONTS.body,
-                fontSize: 20,
-                color: COLORS.ink,
-                minWidth: 140,
-                textAlign: 'center',
-              }}
-            >
-              <div>{child.label}</div>
-              {child.value && (
-                <div style={{ fontFamily: FONTS.mono, fontSize: 18, color: COLORS.accent.blue }}>
-                  {child.value}
-                </div>
-              )}
-            </div>
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 100 }}>
+        <div style={{ display: 'flex', gap: 100 }}>
+          {childCharacters.map((kid) => (
+            <SnapIcon key={kid.c} delay={kid.delay}>
+              <StickFigure character={kid.c} label={kid.label} size={180} />
+            </SnapIcon>
           ))}
-          staggerFrames={6}
-        />
-      </div>
-    </SceneCard>
+        </div>
+      </AbsoluteFill>
+
+      {[420, 700, 980, 1260].map((targetX, i) => (
+        <AbsoluteFill key={i}>
+          <DrawPath
+            d={`M 960,500 L ${targetX},760`}
+            startFrame={25 + i * 15}
+            durationInFrames={15}
+            strokeColor={COLORS.ink}
+            strokeWidth={1.5}
+          />
+        </AbsoluteFill>
+      ))}
+    </AbsoluteFill>
   );
 };

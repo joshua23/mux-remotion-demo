@@ -1,71 +1,70 @@
+/**
+ * TimeSeries — Dalio 风格月度趋势帧
+ * 12 根柱子横排，12月红色高亮（异常）
+ */
 import React from 'react';
-import { SceneCard } from '../components/SceneCard';
+import { AbsoluteFill, useCurrentFrame, interpolate, Easing } from 'remotion';
+import { PaperBackground } from '../components/PaperBackground';
 import { GrowBar } from '../components/GrowBar';
 import { DrawPath } from '../components/DrawPath';
-import { ConceptHighlight } from '../components/ConceptHighlight';
-import { COLORS, FONTS } from '../theme';
+import { COLORS, FONTS, EASING } from '../theme';
 import type { OutlineCard } from '../../scripts/parse-gamma';
-
-interface MonthlyDataPoint {
-  readonly month: string;
-  readonly value: number;
-  readonly isAnomaly?: boolean;
-}
 
 interface TimeSeriesProps {
   readonly card: OutlineCard;
-  readonly data?: MonthlyDataPoint[];
 }
 
-const DEFAULT_DATA: MonthlyDataPoint[] = [
-  { month: '1月', value: 12000 },
-  { month: '2月', value: 28000, isAnomaly: true },
-  { month: '3月', value: 11000 },
-  { month: '4月', value: 13000 },
-  { month: '5月', value: 15000 },
-  { month: '6月', value: 14000 },
-  { month: '7月', value: 16000 },
-  { month: '8月', value: 12500 },
+const MONTHS = [
+  { label: '9月', value: 8200 },
+  { label: '10月', value: 9100 },
+  { label: '11月', value: 7800 },
+  { label: '12月', value: 66176, anomaly: true },
+  { label: '1月', value: 9500 },
+  { label: '2月', value: 8900 },
+  { label: '3月', value: 7600 },
+  { label: '4月', value: 8300 },
+  { label: '5月', value: 9200 },
+  { label: '6月', value: 8700 },
+  { label: '7月', value: 8900 },
+  { label: '8月', value: 7873 },
 ];
 
-export const TimeSeries: React.FC<TimeSeriesProps> = ({ card, data = DEFAULT_DATA }) => {
-  const maxValue = Math.max(...data.map((d) => d.value)) * 1.1;
-  const barWidth = Math.floor(1400 / data.length) - 20;
+export const TimeSeries: React.FC<TimeSeriesProps> = ({ card }) => {
+  const frame = useCurrentFrame();
+  const titleOp = interpolate(frame, [10, 30], [0, 1], { extrapolateRight: 'clamp', easing: Easing.bezier(...EASING.snapIn) });
+  const max = Math.max(...MONTHS.map((m) => m.value));
 
   return (
-    <SceneCard title={card.title}>
-      <div style={{ position: 'relative', height: '80%' }}>
-        {/* X axis */}
-        <DrawPath
-          d="M 0,300 L 1400,300"
-          strokeColor={COLORS.ink}
-          startFrame={0}
-          width={1400}
-          height={300}
-        />
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 20, paddingLeft: 40 }}>
-          {data.map((point, i) => (
-            <div key={i} style={{ position: 'relative', textAlign: 'center' }}>
-              <GrowBar
-                valueTo={point.value}
-                maxValue={maxValue}
-                label={point.month}
-                color={point.isAnomaly ? COLORS.accent.red : COLORS.accent.blue}
-                width={barWidth}
-                delay={i * 3}
-              />
-              {point.isAnomaly && (
-                <div style={{ position: 'absolute', top: -60, left: '50%', transform: 'translateX(-50%)' }}>
-                  <ConceptHighlight cx={20} cy={20} r={20} startFrame={i * 3 + 10} color={COLORS.accent.red} />
+    <AbsoluteFill>
+      <PaperBackground />
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'flex-start', paddingTop: 80, opacity: titleOp }}>
+        <p style={{ fontFamily: FONTS.heading, fontSize: 44, color: COLORS.ink, margin: 0, fontWeight: 600 }}>{card.title}</p>
+      </AbsoluteFill>
+
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'relative', width: 1500 }}>
+          <div style={{ position: 'absolute', left: 0, right: 0, top: 480 }}>
+            <DrawPath d="M 0,0 L 1500,0" startFrame={20} durationInFrames={30} strokeColor={COLORS.ink} strokeWidth={1.5} width={1500} height={4} />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', height: 480 }}>
+            {MONTHS.map((m, i) => (
+              <div key={m.label} style={{ textAlign: 'center' }}>
+                <GrowBar
+                  valueTo={m.value}
+                  maxValue={max}
+                  color={m.anomaly ? COLORS.accent.red : COLORS.ink}
+                  delay={50 + i * 4}
+                  maxHeight={400}
+                  width={70}
+                />
+                <div style={{ fontFamily: FONTS.body, fontSize: 16, color: COLORS.ink, marginTop: 12, opacity: m.anomaly ? 1 : 0.6 }}>
+                  {m.label}
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
         </div>
-        <p style={{ fontSize: 22, color: COLORS.ink, opacity: 0.6, fontFamily: FONTS.mono }}>
-          {card.body}
-        </p>
-      </div>
-    </SceneCard>
+      </AbsoluteFill>
+    </AbsoluteFill>
   );
 };

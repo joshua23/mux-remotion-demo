@@ -1,8 +1,14 @@
+/**
+ * Comparison — Dalio 风格对比帧
+ * 两个柱子并排（左：支出，右：被动收益）+ 中间等号 + 上方一行标题
+ * 80% 留白，全部动画显眼
+ */
 import React from 'react';
-import { SceneCard } from '../components/SceneCard';
+import { AbsoluteFill, useCurrentFrame, interpolate, Easing } from 'remotion';
+import { PaperBackground } from '../components/PaperBackground';
 import { GrowBar } from '../components/GrowBar';
 import { DrawPath } from '../components/DrawPath';
-import { COLORS, FONTS } from '../theme';
+import { COLORS, FONTS, EASING } from '../theme';
 import type { OutlineCard } from '../../scripts/parse-gamma';
 
 interface ComparisonProps {
@@ -16,58 +22,46 @@ interface ComparisonProps {
 
 export const Comparison: React.FC<ComparisonProps> = ({
   card,
-  leftLabel = '支出',
-  rightLabel = '被动收益',
-  leftValue = 160000,
-  rightValue = 144000,
+  leftLabel = '我花的',
+  rightLabel = '余额宝替我赚的',
+  leftValue = 160246,
+  rightValue = 144702,
   maxValue = 200000,
 }) => {
+  const frame = useCurrentFrame();
+  const titleOp = interpolate(frame, [10, 30], [0, 1], { extrapolateRight: 'clamp', easing: Easing.bezier(...EASING.snapIn) });
+
   return (
-    <SceneCard title={card.title}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'center',
-          height: '70%',
-          gap: 120,
-        }}
-      >
-        <div style={{ textAlign: 'center' }}>
-          <GrowBar
-            valueTo={leftValue}
-            maxValue={maxValue}
-            label={leftLabel}
-            color={COLORS.accent.red}
-            delay={0}
-          />
-          <span style={{ fontFamily: FONTS.mono, fontSize: 24, color: COLORS.ink, display: 'block', marginTop: 8 }}>
-            ¥{(leftValue / 10000).toFixed(1)}万
-          </span>
-        </div>
+    <AbsoluteFill>
+      <PaperBackground />
+      {/* 顶部小副标题（不是大 PPT 标题）*/}
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'flex-start', paddingTop: 100, opacity: titleOp }}>
+        <p style={{ fontFamily: FONTS.heading, fontSize: 44, color: COLORS.ink, margin: 0, fontWeight: 600 }}>
+          {card.title}
+        </p>
+      </AbsoluteFill>
 
-        {/* Equals sign path */}
-        <DrawPath
-          d="M 0,30 L 60,30 M 0,50 L 60,50"
-          strokeColor={COLORS.ink}
-          startFrame={20}
-          width={60}
-          height={80}
-        />
+      {/* 居中：两柱 + 等号 */}
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 180 }}>
+          <div style={{ textAlign: 'center' }}>
+            <GrowBar valueTo={leftValue} maxValue={maxValue} color={COLORS.accent.red} delay={20} maxHeight={420} width={120} />
+            <div style={{ fontFamily: FONTS.body, fontSize: 28, color: COLORS.ink, marginTop: 20 }}>{leftLabel}</div>
+            <div style={{ fontFamily: FONTS.mono, fontSize: 36, color: COLORS.ink, marginTop: 4 }}>¥{(leftValue / 10000).toFixed(1)}万</div>
+          </div>
 
-        <div style={{ textAlign: 'center' }}>
-          <GrowBar
-            valueTo={rightValue}
-            maxValue={maxValue}
-            label={rightLabel}
-            color={COLORS.accent.teal}
-            delay={8}
-          />
-          <span style={{ fontFamily: FONTS.mono, fontSize: 24, color: COLORS.ink, display: 'block', marginTop: 8 }}>
-            ¥{(rightValue / 10000).toFixed(1)}万
-          </span>
+          {/* 等号 */}
+          <div style={{ marginBottom: 200 }}>
+            <DrawPath d="M 0,30 L 80,30 M 0,60 L 80,60" startFrame={45} durationInFrames={20} strokeColor={COLORS.ink} strokeWidth={5} width={80} height={90} />
+          </div>
+
+          <div style={{ textAlign: 'center' }}>
+            <GrowBar valueTo={rightValue} maxValue={maxValue} color={COLORS.accent.teal} delay={32} maxHeight={420} width={120} />
+            <div style={{ fontFamily: FONTS.body, fontSize: 28, color: COLORS.ink, marginTop: 20 }}>{rightLabel}</div>
+            <div style={{ fontFamily: FONTS.mono, fontSize: 36, color: COLORS.ink, marginTop: 4 }}>¥{(rightValue / 10000).toFixed(1)}万</div>
+          </div>
         </div>
-      </div>
-    </SceneCard>
+      </AbsoluteFill>
+    </AbsoluteFill>
   );
 };

@@ -1,101 +1,55 @@
+/**
+ * Cycle — Dalio 风格循环帧
+ * Joshua 在中央，4 条 DrawArrow 围绕成环
+ */
 import React from 'react';
-import { SceneCard } from '../components/SceneCard';
+import { AbsoluteFill, useCurrentFrame, interpolate, Easing } from 'remotion';
+import { PaperBackground } from '../components/PaperBackground';
+import { StickFigure } from '../components/StickFigure';
 import { SnapIcon } from '../components/SnapIcon';
 import { DrawArrow } from '../components/DrawArrow';
-import { COLORS, FONTS } from '../theme';
+import { COLORS, FONTS, EASING } from '../theme';
 import type { OutlineCard } from '../../scripts/parse-gamma';
 
 interface CycleProps {
   readonly card: OutlineCard;
-  readonly nodes?: string[];
-  readonly centerLabel?: string;
 }
 
-const DEFAULT_NODES = ['收入', '消费', '储蓄', '投资'];
+export const Cycle: React.FC<CycleProps> = ({ card }) => {
+  const frame = useCurrentFrame();
+  const titleOp = interpolate(frame, [10, 30], [0, 1], { extrapolateRight: 'clamp', easing: Easing.bezier(...EASING.snapIn) });
 
-export const Cycle: React.FC<CycleProps> = ({
-  card,
-  nodes = DEFAULT_NODES,
-  centerLabel = '资金\n循环',
-}) => {
-  const cx = 540;
-  const cy = 300;
-  const r = 220;
-
-  const nodePositions = nodes.map((_, i) => {
-    const angle = (i / nodes.length) * 2 * Math.PI - Math.PI / 2;
-    return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
-  });
+  const arrows = [
+    { d: 'M 960,260 Q 1200,260 1240,540', endX: 1240, endY: 540, angle: Math.PI / 2 },
+    { d: 'M 1240,540 Q 1240,780 960,820', endX: 960, endY: 820, angle: Math.PI },
+    { d: 'M 960,820 Q 720,820 680,540', endX: 680, endY: 540, angle: -Math.PI / 2 },
+    { d: 'M 680,540 Q 680,300 960,260', endX: 960, endY: 260, angle: 0 },
+  ];
 
   return (
-    <SceneCard title={card.title}>
-      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-        <svg style={{ position: 'absolute', inset: 0 }} width="100%" height="100%" viewBox="0 0 1080 600">
-          {nodePositions.map((pos, i) => {
-            const next = nodePositions[(i + 1) % nodePositions.length];
-            const angle = Math.atan2(next.y - pos.y, next.x - pos.x) * (180 / Math.PI);
-            const d = `M ${pos.x},${pos.y} Q ${cx},${cy} ${next.x},${next.y}`;
-            return (
-              <DrawArrow
-                key={i}
-                d={d}
-                endPoint={{ x: next.x, y: next.y, angle }}
-                startFrame={i * 10}
-                strokeColor={COLORS.accent.blue}
-                width={1080}
-                height={600}
-              />
-            );
-          })}
-        </svg>
+    <AbsoluteFill>
+      <PaperBackground />
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'flex-start', paddingTop: 80, opacity: titleOp }}>
+        <p style={{ fontFamily: FONTS.heading, fontSize: 44, color: COLORS.ink, margin: 0, fontWeight: 600 }}>{card.title}</p>
+      </AbsoluteFill>
 
-        {/* Center node */}
-        <div
-          style={{
-            position: 'absolute',
-            left: cx - 70,
-            top: cy - 70,
-            width: 140,
-            height: 140,
-            borderRadius: '50%',
-            backgroundColor: COLORS.accent.teal,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <span style={{ color: '#fff', fontFamily: FONTS.heading, fontSize: 24, textAlign: 'center', whiteSpace: 'pre-line' }}>
-            {centerLabel}
-          </span>
-        </div>
+      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <SnapIcon delay={5}>
+          <StickFigure character="joshua" pose="standing" size={220} />
+        </SnapIcon>
+      </AbsoluteFill>
 
-        {/* Peripheral nodes */}
-        {nodes.map((label, i) => {
-          const pos = nodePositions[i];
-          return (
-            <div
-              key={i}
-              style={{ position: 'absolute', left: pos.x - 60, top: pos.y - 30 }}
-            >
-              <SnapIcon delay={i * 8 + 5}>
-                <div
-                  style={{
-                    backgroundColor: COLORS.paper,
-                    border: `2px solid ${COLORS.ink}`,
-                    borderRadius: 8,
-                    padding: '10px 20px',
-                    fontFamily: FONTS.body,
-                    fontSize: 20,
-                    color: COLORS.ink,
-                  }}
-                >
-                  {label}
-                </div>
-              </SnapIcon>
-            </div>
-          );
-        })}
-      </div>
-    </SceneCard>
+      {arrows.map((a, i) => (
+        <AbsoluteFill key={i}>
+          <DrawArrow
+            d={a.d}
+            endPoint={{ x: a.endX, y: a.endY, angle: a.angle }}
+            startFrame={30 + i * 18}
+            durationInFrames={20}
+            strokeColor={COLORS.accent.teal}
+          />
+        </AbsoluteFill>
+      ))}
+    </AbsoluteFill>
   );
 };

@@ -15,6 +15,7 @@ import { GrowBar } from './components/GrowBar';
 import { CountUp } from './components/CountUp';
 import { SnapIcon } from './components/SnapIcon';
 import { StickFigure } from './components/StickFigure';
+import { Peep } from './components/Peep';
 import { TitleSpotlight } from './components/TitleSpotlight';
 
 import { ConceptReveal } from './archetypes/ConceptReveal';
@@ -48,22 +49,11 @@ export const Preview_StickFigureGallery: React.FC = () => (
     <PaperBackground />
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ display: 'flex', gap: 80, alignItems: 'flex-end' }}>
-        {/* Joshua walks (continuous subtle motion) — staggered snap-in */}
-        <SnapIcon delay={0}>
-          <StickFigure character="joshua" pose="walking" label="Joshua" size={200} />
-        </SnapIcon>
-        <SnapIcon delay={6}>
-          <StickFigure character="wife" pose="standing" label="NaNa" size={200} />
-        </SnapIcon>
-        <SnapIcon delay={12}>
-          <StickFigure character="family-female" pose="waving" label="燕燕（妹妹）" size={200} />
-        </SnapIcon>
-        <SnapIcon delay={18}>
-          <StickFigure character="family-male" pose="standing" label="龙（小舅子）" size={200} />
-        </SnapIcon>
-        <SnapIcon delay={24}>
-          <StickFigure character="business" pose="standing" label="皆柏贸易" size={200} />
-        </SnapIcon>
+        <SnapIcon delay={0}><StickFigure character="joshua" label="Joshua" size={240} /></SnapIcon>
+        <SnapIcon delay={6}><StickFigure character="wife" label="NaNa" size={240} /></SnapIcon>
+        <SnapIcon delay={12}><StickFigure character="family-female" label="燕燕（妹妹）" size={240} /></SnapIcon>
+        <SnapIcon delay={18}><StickFigure character="family-male" label="龙（小舅子）" size={240} /></SnapIcon>
+        <SnapIcon delay={24}><StickFigure character="business" label="皆柏贸易" size={240} /></SnapIcon>
       </div>
     </AbsoluteFill>
   </>
