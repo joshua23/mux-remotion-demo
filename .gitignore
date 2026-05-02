@@ -8,3 +8,4 @@ out
 .env
 
 src/data/
+src/dalio/Timeline.generated.tsx
