@@ -31,29 +31,29 @@ export const PROTAGONIST: Persona = {
  *
  * Key = CSV 里 `交易对方` 字段的值，必须与原始数据精确匹配。
  *
- * ⚠️ 默认推断（基于交易频次和金额模式），Joshua 请检查并修正：
- * - NaNa(张娜)  → 推断为「妻子」（高频生活费 + 亲情卡）
- * - 燕燕(张春彦) → 推断为「亲人」（单笔 ¥20k，2023-12 集中）
- * - 龙(张龙)    → 推断为「亲人」（多笔 ¥5k 转账）
- * - 皆柏贸易... → 业务对手方
+ * ✅ Joshua 确认（2026-05-02）的家庭关系：
+ * - NaNa(张娜)   → 妻子
+ * - 燕燕(张春彦) → 妹妹（Joshua 的妹妹）
+ * - 龙(张龙)     → 小舅子（妻子 NaNa 的弟弟）
+ * - 皆柏贸易...  → 业务对手方
  */
 export const NETWORK: Record<string, Persona> = {
   'NaNa(张娜)': {
     character: 'wife',
     label: 'NaNa',
-    relation: '妻子', // ← TODO Joshua 确认
+    relation: '妻子',
     narrativeAlias: 'NaNa',
   },
   '燕燕（9万)(张春彦)': {
     character: 'family-female',
     label: '燕燕',
-    relation: '亲人', // ← TODO Joshua 确认
+    relation: '妹妹',
     narrativeAlias: '燕燕',
   },
   '龙(张龙)': {
     character: 'family-male',
     label: '龙',
-    relation: '亲人', // ← TODO Joshua 确认
+    relation: '小舅子',
     narrativeAlias: '龙',
   },
   '皆柏贸易（杭州）有限公司上海第七分公司': {
