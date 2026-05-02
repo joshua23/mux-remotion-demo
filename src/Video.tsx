@@ -1,7 +1,6 @@
 import "./style.css";
 
 import { Composition } from 'remotion';
-import { Timeline } from './Timeline';
 import { DalioTimeline } from './dalio/Timeline.generated';
 import {
   Preview_PaperBackground,
@@ -25,14 +24,6 @@ const H = 1080;
 export const RemotionVideo: React.FC = () => {
   return (
     <>
-      <Composition
-        id="Timeline"
-        component={Timeline}
-        durationInFrames={1180}
-        fps={FPS}
-        width={W}
-        height={H}
-      />
       <Composition
         id="DalioFinanceVideo"
         component={DalioTimeline}
