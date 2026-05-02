@@ -136,3 +136,13 @@ export async function parseAlipayCsv(filePath: string): Promise<AlipayTransactio
     fundStatus: row['资金状态']?.trim() ?? '',
   }));
 }
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const [, , input, output] = process.argv;
+  if (!input || !output) { console.error('Usage: tsx preprocess.ts <in.csv> <out.json>'); process.exit(1); }
+  parseAlipayCsv(input).then(aggregate).then(async (agg) => {
+    const fsw = await import('node:fs/promises');
+    await fsw.writeFile(output, JSON.stringify(agg, null, 2), 'utf-8');
+    console.log(`✓ Wrote ${output} — ${agg.totalCount} txs, ¥${agg.totalExpense.toFixed(2)} expense, ¥${agg.passiveIncome.total.toFixed(2)} passive`);
+  }).catch((err) => { console.error(err); process.exit(2); });
+}
