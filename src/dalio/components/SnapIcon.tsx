@@ -3,8 +3,8 @@ import { spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { EASING } from '../theme';
 
 interface SnapIconProps {
-  delay?: number;
-  children: React.ReactNode;
+  readonly delay?: number;
+  readonly children: React.ReactNode;
 }
 
 export const SnapIcon: React.FC<SnapIconProps> = ({ delay = 0, children }) => {

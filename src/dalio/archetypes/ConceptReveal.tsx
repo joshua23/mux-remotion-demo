@@ -6,8 +6,8 @@ import { COLORS } from '../theme';
 import type { OutlineCard } from '../../scripts/parse-gamma';
 
 interface ConceptRevealProps {
-  card: OutlineCard;
-  icon?: React.ReactNode;
+  readonly card: OutlineCard;
+  readonly icon?: React.ReactNode;
 }
 
 export const ConceptReveal: React.FC<ConceptRevealProps> = ({ card, icon }) => {

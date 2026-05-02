@@ -4,9 +4,9 @@ import { COLORS, STROKE } from '../theme';
 import { STICK_FIGURE_PATHS, StickFigurePose } from '../utils/stickFigures';
 
 interface StickFigureProps {
-  pose?: StickFigurePose;
-  color?: string;
-  size?: number;
+  readonly pose?: StickFigurePose;
+  readonly color?: string;
+  readonly size?: number;
 }
 
 export const StickFigure: React.FC<StickFigureProps> = ({

@@ -11,21 +11,21 @@ import Desktop from '../components/icons/Desktop';
 import Tv from '../components/icons/Tv';
 import Phone from '../components/icons/Mobile';
 
-const DEVICE_LOOKUP = {
+const DEVICE_LOOKUP: Record<string, React.ComponentType> = {
   phone: Phone,
   tv: Tv,
   desktop: Desktop,
   tablet: Tablet
 }
 
-const DEVICE_NAME_CN = {
+const DEVICE_NAME_CN: Record<string, string> = {
   phone: "手机",
   tv: "电视",
   desktop: "桌面电脑",
   tablet: "平板电脑"
 }
 
-const Stat = ({ index, children }: { index: number, children: React.ReactNode }) => {
+const Stat = ({ index, children }: { readonly index: number; readonly children: React.ReactNode }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -50,11 +50,11 @@ const Stat = ({ index, children }: { index: number, children: React.ReactNode })
   )
 }
 
-const Value = ({ children }: { children: React.ReactNode }) => (
+const Value = ({ children }: { readonly children: React.ReactNode }) => (
   <div className="z-10 font-sans tracking-tight text-3xl leading-none" style={{ width: "700px" }}>{children}</div>
 )
 
-const Label = ({ children }: { children: React.ReactNode }) => (
+const Label = ({ children }: { readonly children: React.ReactNode }) => (
   <div className="text-mux-black text-lg font-sans capitalize z-10 tracking-tight" style={{ width: "250px" }}>{children}</div>
 )
 

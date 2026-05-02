@@ -16,7 +16,7 @@ export function mapCardToArchetype(card: OutlineCard): ArchetypeName {
 }
 
 export function buildTimeline(
-  outline: OutlineCard[], manifest: ManifestEntry[], fps: number = 30,
+  outline: OutlineCard[], manifest: ManifestEntry[], fps = 30,
 ): TimelineCard[] {
   return outline.map((card) => {
     const m = manifest.find((x) => x.index === card.index);
@@ -91,7 +91,7 @@ ${seriesItems}
   console.log(`✓ Generated ${outputPath} — ${cards.length} cards, total ${cards.reduce((s, c) => s + c.durationFrames, 0)} frames`);
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   const [, , outlineJson, manifestJson, audioBaseUrl, outputPath] = process.argv;
   if (!outlineJson || !manifestJson || !audioBaseUrl || !outputPath) {
     console.error('Usage: tsx build-timeline.ts <outline.json> <manifest.json> <audio-base> <out.tsx>');
@@ -103,5 +103,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   ]).then(([outline, manifest]) => {
     const cards = buildTimeline(outline, manifest);
     return generateTimeline(cards, audioBaseUrl, outputPath);
-  }).catch((err) => { console.error(err); process.exit(2); });
+  }).catch((err) => {
+    console.error(err);
+    process.exit(2);
+  });
 }

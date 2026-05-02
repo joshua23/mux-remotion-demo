@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import React from 'react';
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Cycle } from './Cycle';
 
 const CARD = { index: 3, title: '资金循环', body: '循环引擎', narration: '旁白', rawHtml: '' };

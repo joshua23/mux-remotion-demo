@@ -3,15 +3,15 @@ import { useCurrentFrame, interpolate, Easing } from 'remotion';
 import { COLORS, STROKE, TIMING, EASING } from '../theme';
 
 interface DrawPathProps {
-  d: string;
-  pathLength?: number;
-  startFrame?: number;
-  durationInFrames?: number;
-  strokeColor?: string;
-  strokeWidth?: number;
-  fill?: string;
-  width?: number;
-  height?: number;
+  readonly d: string;
+  readonly pathLength?: number;
+  readonly startFrame?: number;
+  readonly durationInFrames?: number;
+  readonly strokeColor?: string;
+  readonly strokeWidth?: number;
+  readonly fill?: string;
+  readonly width?: number;
+  readonly height?: number;
 }
 
 export const DrawPath: React.FC<DrawPathProps> = ({

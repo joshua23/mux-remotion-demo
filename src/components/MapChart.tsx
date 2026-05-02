@@ -8,15 +8,15 @@ import {
 import { interpolateColors } from "remotion";
 
 type StateData = {
-  views: number; // number of views in this state
-  value: number; // unique viewers in this state
-  total_watch_time: number; // seconds watched in this state
-  field: string; // State name
+  views: number;
+  value: number;
+  field: string;
+  [key: string]: unknown;
 }
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
 
-const MapChart = ({ data }: { data: StateData[] }) => {
+const MapChart = ({ data }: { readonly data: StateData[] }) => {
   return (
     <ComposableMap
       width={1000}

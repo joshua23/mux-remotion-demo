@@ -7,15 +7,15 @@ import Layout from "../components/Layout";
 import Trend from "../components/Trend";
 import Play from "../components/icons/Play";
 
-const Stat = ({ children }: { children: React.ReactNode }) => (
+const Stat = ({ children }: { readonly children: React.ReactNode }) => (
   <div className="mb-12 border-t-2 border-mux-pink-darker flex items-start justify-between py-5 px-10 h-72">{children}</div>
 )
 
-const Value = ({ children }: { children: React.ReactNode }) => (
+const Value = ({ children }: { readonly children: React.ReactNode }) => (
   <div className="font-normal leading-none mb-4 text-mux-black tracking-tight" style={{ fontSize: `140px` }}>{children}</div>
 )
 
-const Label = ({ children }: { children: React.ReactNode }) => (
+const Label = ({ children }: { readonly children: React.ReactNode }) => (
   <div className="font-normal text-mux-black text-lg font-sans tracking-tight">{children}</div>
 )
 

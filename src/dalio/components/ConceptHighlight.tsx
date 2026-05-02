@@ -3,12 +3,12 @@ import { DrawPath } from './DrawPath';
 import { COLORS, STROKE } from '../theme';
 
 interface ConceptHighlightProps {
-  cx: number;
-  cy: number;
-  r?: number;
-  startFrame?: number;
-  durationInFrames?: number;
-  color?: string;
+  readonly cx: number;
+  readonly cy: number;
+  readonly r?: number;
+  readonly startFrame?: number;
+  readonly durationInFrames?: number;
+  readonly color?: string;
 }
 
 export const ConceptHighlight: React.FC<ConceptHighlightProps> = ({

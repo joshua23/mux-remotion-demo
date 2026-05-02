@@ -4,7 +4,7 @@ require('dotenv').config()
 import * as fs from "fs/promises";
 import { subMonths, getUnixTime } from 'date-fns'
 
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 type Metric = "views" | "unique_viewers"
 type GroupBy = "viewer_device_category" | "video_title" | "region" | "browser"
@@ -22,34 +22,11 @@ type Request = {
   type: DataType;
   outputFilename: string;
   metric: Metric;
-  group_by?: GroupBy;
-  order_by?: OrderBy;
+  groupBy?: GroupBy;
+  orderBy?: OrderBy;
   limit?: number;
-  order_direction?: OrderDirection;
+  orderDirection?: OrderDirection;
   filters?: Filter[]
-}
-
-type Breakdown = {
-  total_watch_time: number
-  total_playing_time: number;
-  views: number;
-  field: string;
-}
-
-type OverallData = {
-  total_views: number;
-  total_watch_time: number;
-  total_playing_time: number;
-}
-
-type BreakdownResponse = {
-  data: Breakdown[]
-  timeframe: number[];
-}
-
-type OverallResponse = {
-  data: OverallData;
-  timeframe: number[];
 }
 
 const username = process.env.MUX_TOKEN_ID;
@@ -70,8 +47,8 @@ const REQUESTS: Request[] = [
     metric: "views",
     type: "breakdown",
     outputFilename: "views_by_title.json",
-    group_by: "video_title",
-    order_by: "views",
+    groupBy: "video_title",
+    orderBy: "views",
     limit: 10,
   },
 
@@ -80,8 +57,8 @@ const REQUESTS: Request[] = [
     metric: "unique_viewers",
     type: "breakdown",
     outputFilename: "unique_viewers_by_us_state.json",
-    group_by: "region",
-    order_by: "value",
+    groupBy: "region",
+    orderBy: "value",
     limit: 50,
     filters: [
       { type: "include", key: "country", value: "US" }
@@ -93,8 +70,8 @@ const REQUESTS: Request[] = [
     metric: "unique_viewers",
     type: "breakdown",
     outputFilename: "unique_viewers_by_browser.json",
-    group_by: "browser",
-    order_by: "value",
+    groupBy: "browser",
+    orderBy: "value",
     limit: 4,
     filters: [
       {type: "include", "key": "browser", "value": "Chrome"},
@@ -109,8 +86,8 @@ const REQUESTS: Request[] = [
     metric: "views",
     type: "breakdown",
     outputFilename: "views_by_device.json",
-    group_by: "viewer_device_category",
-    order_by: "views",
+    groupBy: "viewer_device_category",
+    orderBy: "views",
     limit: 4,
   },
 
@@ -119,18 +96,18 @@ const REQUESTS: Request[] = [
     metric: "views",
     type: "breakdown",
     outputFilename: "playing_time_by_title.json",
-    group_by: "video_title",
-    order_by: "playing_time",
+    groupBy: "video_title",
+    orderBy: "playing_time",
     limit: 5,
-    order_direction: "asc"
+    orderDirection: "asc"
   }
 ];
 
 const now = new Date();
-const one_month_ago = getUnixTime(subMonths(now, 1));
-const two_months_ago = getUnixTime(subMonths(now, 2));
-const pastMonthTimeframe = `timeframe[]=${one_month_ago}&timeframe[]=${getUnixTime(now)}`;
-const previousMonthTimeframe = `timeframe[]=${two_months_ago}&timeframe[]=${one_month_ago}`
+const oneMonthAgo = getUnixTime(subMonths(now, 1));
+const twoMonthsAgo = getUnixTime(subMonths(now, 2));
+const pastMonthTimeframe = `timeframe[]=${oneMonthAgo}&timeframe[]=${getUnixTime(now)}`;
+const previousMonthTimeframe = `timeframe[]=${twoMonthsAgo}&timeframe[]=${oneMonthAgo}`
 
 const fetchData = async (metric: Metric, type: DataType, querystring: string) => {
   try {
@@ -138,7 +115,7 @@ const fetchData = async (metric: Metric, type: DataType, querystring: string) =>
       axios.get(`https://api.mux.com/data/v1/metrics/${metric}/${type}?${pastMonthTimeframe}${querystring}`, { headers }),
       axios.get(`https://api.mux.com/data/v1/metrics/${metric}/${type}?${previousMonthTimeframe}${querystring}`, { headers })
     ])
-  
+
     return [pastMonthResponse.data, previousMonthResponse.data];
   } catch (error) {
     if (axios.isAxiosError(error))  {
@@ -157,9 +134,9 @@ const hydrate = async () => {
   await fs.mkdir("./src/data");
 
   await Promise.all(
-    REQUESTS.map(async ({ type, metric, group_by, limit, order_by, order_direction = "desc", filters = [], outputFilename }) => {
-      const params = type === "breakdown" ? `&group_by=${group_by}&limit=${limit}&order_by=${order_by}&order_direction=${order_direction}` : "";
-      const filterStrings = filters.map(({type, key, value}) => 
+    REQUESTS.map(async ({ type, metric, groupBy, limit, orderBy, orderDirection = "desc", filters = [], outputFilename }) => {
+      const params = type === "breakdown" ? `&group_by=${groupBy}&limit=${limit}&order_by=${orderBy}&order_direction=${orderDirection}` : "";
+      const filterStrings = filters.map(({type, key, value}) =>
         `&filters[]=${type === "exclude" ? "!" : ""}${key}:${value}`
       )
       const querystring = params + filterStrings.join('');

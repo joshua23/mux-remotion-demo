@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import React from 'react';
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ConceptReveal } from './ConceptReveal';
 
 const CARD = { index: 0, title: '概念揭示', body: '这是正文内容', narration: '旁白文案', rawHtml: '' };

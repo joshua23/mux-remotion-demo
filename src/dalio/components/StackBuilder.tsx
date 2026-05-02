@@ -3,8 +3,8 @@ import { Sequence } from 'remotion';
 import { SnapIcon } from './SnapIcon';
 
 interface StackBuilderProps {
-  items: React.ReactNode[];
-  staggerFrames?: number;
+  readonly items: React.ReactNode[];
+  readonly staggerFrames?: number;
 }
 
 export const StackBuilder: React.FC<StackBuilderProps> = ({ items, staggerFrames = 8 }) => {

@@ -6,14 +6,14 @@ import { COLORS, FONTS } from '../theme';
 import type { OutlineCard } from '../../scripts/parse-gamma';
 
 interface HierarchyNode {
-  label: string;
-  value?: string;
+  readonly label: string;
+  readonly value?: string;
 }
 
 interface HierarchyProps {
-  card: OutlineCard;
-  rootLabel?: string;
-  children?: HierarchyNode[];
+  readonly card: OutlineCard;
+  readonly rootLabel?: string;
+  readonly children?: HierarchyNode[];
 }
 
 const DEFAULT_CHILDREN: HierarchyNode[] = [

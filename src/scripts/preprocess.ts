@@ -24,7 +24,9 @@ function categorize(itemName: string): string {
 }
 
 export function aggregate(txs: AlipayTransaction[]): AggregatedFinance {
-  let totalExpense = 0, totalIncome = 0, totalNeutral = 0;
+  let totalExpense = 0;
+  let totalIncome = 0;
+  let totalNeutral = 0;
   const monthlyMap: Map<string, { expense: number; income: number }> = new Map();
   const categoryMap: Map<string, { amount: number; count: number }> = new Map();
   const merchantMap: Map<string, { amount: number; count: number }> = new Map();
@@ -48,10 +50,12 @@ export function aggregate(txs: AlipayTransaction[]): AggregatedFinance {
       monthlyMap.set(month, m);
       const cat = categorize(tx.itemName);
       const c = categoryMap.get(cat) ?? { amount: 0, count: 0 };
-      c.amount += tx.amount; c.count++;
+      c.amount += tx.amount;
+      c.count++;
       categoryMap.set(cat, c);
       const merch = merchantMap.get(tx.counterparty) ?? { amount: 0, count: 0 };
-      merch.amount += tx.amount; merch.count++;
+      merch.amount += tx.amount;
+      merch.count++;
       merchantMap.set(tx.counterparty, merch);
     } else if (tx.direction === '收入') {
       totalIncome += tx.amount;
@@ -117,7 +121,9 @@ export async function parseAlipayCsv(filePath: string): Promise<AlipayTransactio
     header: true, skipEmptyLines: true,
     transformHeader: (h: string) => h.trim(),
   });
-  return result.data.map((row: Record<string, string>): AlipayTransaction => ({
+  return result.data.map((rowRaw): AlipayTransaction => {
+    const row = rowRaw as Record<string, string>;
+    return ({
     txId: row['交易号']?.trim() ?? '',
     merchantOrderId: row['商家订单号']?.trim() ?? '',
     createdAt: row['交易创建时间']?.trim() ?? '',
@@ -134,15 +140,22 @@ export async function parseAlipayCsv(filePath: string): Promise<AlipayTransactio
     refunded: Number(row['成功退款']) || 0,
     note: row['备注']?.trim() ?? '',
     fundStatus: row['资金状态']?.trim() ?? '',
-  }));
+  });
+  });
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   const [, , input, output] = process.argv;
-  if (!input || !output) { console.error('Usage: tsx preprocess.ts <in.csv> <out.json>'); process.exit(1); }
+  if (!input || !output) {
+    console.error('Usage: tsx preprocess.ts <in.csv> <out.json>');
+    process.exit(1);
+  }
   parseAlipayCsv(input).then(aggregate).then(async (agg) => {
     const fsw = await import('node:fs/promises');
     await fsw.writeFile(output, JSON.stringify(agg, null, 2), 'utf-8');
     console.log(`✓ Wrote ${output} — ${agg.totalCount} txs, ¥${agg.totalExpense.toFixed(2)} expense, ¥${agg.passiveIncome.total.toFixed(2)} passive`);
-  }).catch((err) => { console.error(err); process.exit(2); });
+  }).catch((err) => {
+    console.error(err);
+    process.exit(2);
+  });
 }

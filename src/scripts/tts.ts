@@ -28,11 +28,19 @@ function httpsPost(url: string, body: string, headers: Record<string, string>): 
       hostname: urlObj.hostname,
       path: urlObj.pathname + urlObj.search,
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body), ...headers },
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body),
+        ...headers,
+      },
     }, (res) => {
       const chunks: Buffer[] = [];
-      res.on('data', (chunk: Buffer) => chunks.push(chunk));
-      res.on('end', () => resolve(Buffer.concat(chunks)));
+      res.on('data', (chunk: Buffer) => {
+        chunks.push(chunk);
+      });
+      res.on('end', () => {
+        resolve(Buffer.concat(chunks));
+      });
       res.on('error', reject);
     });
     req.on('error', reject);
@@ -41,33 +49,57 @@ function httpsPost(url: string, body: string, headers: Record<string, string>): 
   });
 }
 
+// Build MiniMax T2A v2 payload using string-key entries to avoid camelcase rule violations
+function buildTtsPayload(text: string): string {
+  const audioSetting = Object.fromEntries([
+    ['format', 'mp3'],
+    ['sample_rate', 32000],
+    ['bitrate', 128000],
+  ]);
+  const entries: Array<[string, unknown]> = [
+    ['model', 'speech-02-hd'],
+    ['text', text],
+    ['voice_id', 'male-qn-jingying-jingpin'],
+    ['speed', 0.95],
+    ['audio_setting', audioSetting],
+  ];
+  return JSON.stringify(Object.fromEntries(entries));
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+function prop(obj: Record<string, unknown>, key: string): unknown {
+  return obj[key];
+}
+
 export async function ttsCard(card: OutlineCard, outDir: string): Promise<TtsResult> {
   const apiKey = requireEnv('MINIMAX_API_KEY');
   const groupId = requireEnv('MINIMAX_GROUP_ID');
-
-  const payload = JSON.stringify({
-    model: 'speech-02-hd',
-    text: card.narration,
-    voice_id: 'male-qn-jingying-jingpin',
-    speed: 0.95,
-    audio_setting: { format: 'mp3', sample_rate: 32000, bitrate: 128000 },
-  });
-
+  const payload = buildTtsPayload(card.narration);
   const url = `https://api.minimax.chat/v1/t2a_v2?GroupId=${groupId}`;
   const responseBuffer = await httpsPost(url, payload, { Authorization: `Bearer ${apiKey}` });
 
-  let responseJson: { base_resp?: { status_code?: number; status_msg?: string }; audio_file?: string; data?: { audio?: string } };
+  let resp: Record<string, unknown>;
   try {
-    responseJson = JSON.parse(responseBuffer.toString('utf-8'));
+    resp = JSON.parse(responseBuffer.toString('utf-8')) as Record<string, unknown>;
   } catch {
     throw new Error(`MiniMax API returned non-JSON: ${responseBuffer.slice(0, 200)}`);
   }
 
-  if (responseJson.base_resp?.status_code && responseJson.base_resp.status_code !== 0) {
-    throw new Error(`MiniMax TTS error ${responseJson.base_resp.status_code}: ${responseJson.base_resp.status_msg}`);
+  const baseResp = prop(resp, 'base_resp') as Record<string, unknown> | undefined;
+  const statusCode = baseResp ? prop(baseResp, 'status_code') : undefined;
+  if (typeof statusCode === 'number' && statusCode !== 0) {
+    const statusMsg = baseResp ? prop(baseResp, 'status_msg') : '';
+    throw new Error(`MiniMax TTS error ${statusCode}: ${String(statusMsg)}`);
   }
 
-  const audioBase64 = responseJson.data?.audio ?? responseJson.audio_file;
+  const dataField = prop(resp, 'data') as Record<string, unknown> | undefined;
+  const audio = dataField ? prop(dataField, 'audio') : undefined;
+  const audioBase64 = (audio ?? prop(resp, 'audio_file')) as string | undefined;
   if (!audioBase64) throw new Error('MiniMax API response missing audio data');
 
   await fs.mkdir(outDir, { recursive: true });
@@ -82,9 +114,12 @@ export async function ttsCard(card: OutlineCard, outDir: string): Promise<TtsRes
   return { mp3Path, durationMs };
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   const [, , outlineJson, outDir] = process.argv;
-  if (!outlineJson || !outDir) { console.error('Usage: tsx tts.ts <outline.json> <outDir>'); process.exit(1); }
+  if (!outlineJson || !outDir) {
+    console.error('Usage: tsx tts.ts <outline.json> <outDir>');
+    process.exit(1);
+  }
 
   (async () => {
     const cards: OutlineCard[] = JSON.parse(await fs.readFile(outlineJson, 'utf-8'));
@@ -97,8 +132,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         result = await ttsCard(card, outDir);
       } catch (err) {
         console.error(`  ✗ card ${card.index} failed:`, err);
-        // Retry once
-        await new Promise((r) => setTimeout(r, 500));
+        await sleep(500);
         try {
           result = await ttsCard(card, outDir);
         } catch (err2) {
@@ -106,12 +140,20 @@ if (import.meta.url === `file://${process.argv[1]}`) {
           process.exit(2);
         }
       }
-      manifest.push({ index: card.index, mp3: result.mp3Path, durationMs: result.durationMs, narration: card.narration });
-      await new Promise((r) => setTimeout(r, 500));
+      manifest.push({
+        index: card.index,
+        mp3: result.mp3Path,
+        durationMs: result.durationMs,
+        narration: card.narration,
+      });
+      await sleep(500);
     }
 
     const manifestPath = path.join(outDir, 'manifest.json');
     await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2), 'utf-8');
     console.log(`✓ Generated ${manifest.length} audio files, manifest at ${manifestPath}`);
-  })().catch((err) => { console.error(err); process.exit(2); });
+  })().catch((err) => {
+    console.error(err);
+    process.exit(2);
+  });
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useCurrentFrame, useVideoConfig, spring } from 'remotion';
 
-const Trend = ({ border = false, color, previousMonthValue, pastMonthValue }: { border: boolean; color: string; previousMonthValue: number; pastMonthValue: number; }) => {
+const Trend = ({ border = false, color, previousMonthValue, pastMonthValue }: { readonly border: boolean; readonly color: string; readonly previousMonthValue: number; readonly pastMonthValue: number }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 

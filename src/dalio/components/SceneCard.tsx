@@ -4,9 +4,9 @@ import { PaperBackground } from './PaperBackground';
 import { FONTS, LAYOUT, COLORS } from '../theme';
 
 interface SceneCardProps {
-  title: string;
-  timeRange?: string;
-  children?: React.ReactNode;
+  readonly title: string;
+  readonly timeRange?: string;
+  readonly children?: React.ReactNode;
 }
 
 export const SceneCard: React.FC<SceneCardProps> = ({ title, timeRange, children }) => {

@@ -3,14 +3,14 @@ import { spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { COLORS, EASING } from '../theme';
 
 interface GrowBarProps {
-  valueFrom?: number;
-  valueTo: number;
-  maxValue: number;
-  label?: string;
-  color?: string;
-  width?: number;
-  maxHeight?: number;
-  delay?: number;
+  readonly valueFrom?: number;
+  readonly valueTo: number;
+  readonly maxValue: number;
+  readonly label?: string;
+  readonly color?: string;
+  readonly width?: number;
+  readonly maxHeight?: number;
+  readonly delay?: number;
 }
 
 export const GrowBar: React.FC<GrowBarProps> = ({

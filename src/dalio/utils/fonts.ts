@@ -11,8 +11,10 @@ export async function loadDalioFonts() {
   await Promise.all(links.map((href) =>
     new Promise<void>((resolve) => {
       const link = document.createElement('link');
-      link.rel = 'stylesheet'; link.href = href;
-      link.onload = () => resolve(); link.onerror = () => resolve();
+      link.rel = 'stylesheet';
+      link.href = href;
+      link.onload = () => resolve();
+      link.onerror = () => resolve();
       document.head.appendChild(link);
     })
   ));

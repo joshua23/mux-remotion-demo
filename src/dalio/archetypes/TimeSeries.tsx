@@ -7,14 +7,14 @@ import { COLORS, FONTS } from '../theme';
 import type { OutlineCard } from '../../scripts/parse-gamma';
 
 interface MonthlyDataPoint {
-  month: string;
-  value: number;
-  isAnomaly?: boolean;
+  readonly month: string;
+  readonly value: number;
+  readonly isAnomaly?: boolean;
 }
 
 interface TimeSeriesProps {
-  card: OutlineCard;
-  data?: MonthlyDataPoint[];
+  readonly card: OutlineCard;
+  readonly data?: MonthlyDataPoint[];
 }
 
 const DEFAULT_DATA: MonthlyDataPoint[] = [

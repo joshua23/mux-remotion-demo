@@ -6,14 +6,14 @@ import { COLORS, FONTS } from '../theme';
 import type { OutlineCard } from '../../scripts/parse-gamma';
 
 interface CauseEffectNode {
-  label: string;
-  x: number;
-  y: number;
+  readonly label: string;
+  readonly x: number;
+  readonly y: number;
 }
 
 interface CauseEffectProps {
-  card: OutlineCard;
-  nodes?: CauseEffectNode[];
+  readonly card: OutlineCard;
+  readonly nodes?: CauseEffectNode[];
 }
 
 const DEFAULT_NODES: CauseEffectNode[] = [

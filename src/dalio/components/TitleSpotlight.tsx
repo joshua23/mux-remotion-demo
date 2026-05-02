@@ -3,8 +3,8 @@ import { useCurrentFrame, interpolate, AbsoluteFill } from 'remotion';
 import { COLORS, FONTS } from '../theme';
 
 interface TitleSpotlightProps {
-  title: string;
-  subtitle?: string;
+  readonly title: string;
+  readonly subtitle?: string;
 }
 
 export const TitleSpotlight: React.FC<TitleSpotlightProps> = ({ title, subtitle }) => {

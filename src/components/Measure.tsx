@@ -1,7 +1,7 @@
 import { useCurrentFrame, useVideoConfig, spring } from 'remotion';
 
 // Passing index allows us to cascade the measurement animation
-const Measure = ({ index, value }: { index: number, value: number }) => {
+const Measure = ({ index, value }: { readonly index: number; readonly value: number }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 

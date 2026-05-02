@@ -2,16 +2,16 @@ import React from 'react';
 import { Sequence, Audio } from 'remotion';
 
 interface ManifestEntry {
-  index: number;
-  mp3: string;
-  durationMs: number;
-  narration: string;
+  readonly index: number;
+  readonly mp3: string;
+  readonly durationMs: number;
+  readonly narration: string;
 }
 
 interface NarrationCueProps {
-  manifest: ManifestEntry[];
-  fps?: number;
-  audioBaseUrl?: string;
+  readonly manifest: ManifestEntry[];
+  readonly fps?: number;
+  readonly audioBaseUrl?: string;
 }
 
 export const NarrationCue: React.FC<NarrationCueProps> = ({

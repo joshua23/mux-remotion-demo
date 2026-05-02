@@ -6,12 +6,12 @@ import { COLORS, FONTS } from '../theme';
 import type { OutlineCard } from '../../scripts/parse-gamma';
 
 interface ComparisonProps {
-  card: OutlineCard;
-  leftLabel?: string;
-  rightLabel?: string;
-  leftValue?: number;
-  rightValue?: number;
-  maxValue?: number;
+  readonly card: OutlineCard;
+  readonly leftLabel?: string;
+  readonly rightLabel?: string;
+  readonly leftValue?: number;
+  readonly rightValue?: number;
+  readonly maxValue?: number;
 }
 
 export const Comparison: React.FC<ComparisonProps> = ({

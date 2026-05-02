@@ -6,9 +6,9 @@ import { COLORS, FONTS } from '../theme';
 import type { OutlineCard } from '../../scripts/parse-gamma';
 
 interface CycleProps {
-  card: OutlineCard;
-  nodes?: string[];
-  centerLabel?: string;
+  readonly card: OutlineCard;
+  readonly nodes?: string[];
+  readonly centerLabel?: string;
 }
 
 const DEFAULT_NODES = ['收入', '消费', '储蓄', '投资'];
@@ -18,7 +18,9 @@ export const Cycle: React.FC<CycleProps> = ({
   nodes = DEFAULT_NODES,
   centerLabel = '资金\n循环',
 }) => {
-  const cx = 540, cy = 300, r = 220;
+  const cx = 540;
+  const cy = 300;
+  const r = 220;
 
   const nodePositions = nodes.map((_, i) => {
     const angle = (i / nodes.length) * 2 * Math.PI - Math.PI / 2;

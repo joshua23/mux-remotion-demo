@@ -3,12 +3,12 @@ import { useCurrentFrame, interpolate } from 'remotion';
 import { TIMING, COLORS, FONTS } from '../theme';
 
 interface CountUpProps {
-  from?: number;
-  to: number;
-  format?: (n: number) => string;
-  startFrame?: number;
-  durationInFrames?: number;
-  style?: React.CSSProperties;
+  readonly from?: number;
+  readonly to: number;
+  readonly format?: (n: number) => string;
+  readonly startFrame?: number;
+  readonly durationInFrames?: number;
+  readonly style?: React.CSSProperties;
 }
 
 const defaultFormat = (n: number) =>

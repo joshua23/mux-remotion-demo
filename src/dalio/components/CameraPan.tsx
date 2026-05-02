@@ -3,17 +3,17 @@ import { useCurrentFrame, interpolate, Easing } from 'remotion';
 import { EASING } from '../theme';
 
 interface PanTarget {
-  x: number;
-  y: number;
-  scale: number;
+  readonly x: number;
+  readonly y: number;
+  readonly scale: number;
 }
 
 interface CameraPanProps {
-  from: PanTarget;
-  to: PanTarget;
-  startFrame?: number;
-  durationInFrames?: number;
-  children: React.ReactNode;
+  readonly from: PanTarget;
+  readonly to: PanTarget;
+  readonly startFrame?: number;
+  readonly durationInFrames?: number;
+  readonly children: React.ReactNode;
 }
 
 export const CameraPan: React.FC<CameraPanProps> = ({

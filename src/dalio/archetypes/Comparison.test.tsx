@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import React from 'react';
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Comparison } from './Comparison';
 
 const CARD = { index: 2, title: '对比分析', body: '支出与收益', narration: '旁白', rawHtml: '' };

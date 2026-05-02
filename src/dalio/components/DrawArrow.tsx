@@ -4,19 +4,19 @@ import { DrawPath } from './DrawPath';
 import { COLORS, STROKE, TIMING } from '../theme';
 
 interface DrawArrowProps {
-  d: string;
-  endPoint: { x: number; y: number; angle: number };
-  pathLength?: number;
-  startFrame?: number;
-  durationInFrames?: number;
-  strokeColor?: string;
-  strokeWidth?: number;
-  width?: number;
-  height?: number;
+  readonly d: string;
+  readonly endPoint: { readonly x: number; readonly y: number; readonly angle: number };
+  readonly pathLength?: number;
+  readonly startFrame?: number;
+  readonly durationInFrames?: number;
+  readonly strokeColor?: string;
+  readonly strokeWidth?: number;
+  readonly width?: number;
+  readonly height?: number;
 }
 
 const ArrowHead: React.FC<{
-  x: number; y: number; angle: number; color: string; strokeWidth: number; opacity: number;
+  readonly x: number; readonly y: number; readonly angle: number; readonly color: string; readonly strokeWidth: number; readonly opacity: number;
 }> = ({ x, y, angle, color, strokeWidth, opacity }) => {
   const size = strokeWidth * 4;
   return (

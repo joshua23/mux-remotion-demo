@@ -2,7 +2,7 @@ import React from 'react';
 import { AbsoluteFill } from 'remotion';
 import { COLORS } from '../theme';
 
-export const PaperBackground: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+export const PaperBackground: React.FC<{ readonly children?: React.ReactNode }> = ({ children }) => {
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.paper }}>
       <svg

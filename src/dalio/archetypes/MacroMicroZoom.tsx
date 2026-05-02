@@ -6,9 +6,9 @@ import { COLORS, FONTS } from '../theme';
 import type { OutlineCard } from '../../scripts/parse-gamma';
 
 interface MacroMicroZoomProps {
-  card: OutlineCard;
-  macroContent?: React.ReactNode;
-  microContent?: React.ReactNode;
+  readonly card: OutlineCard;
+  readonly macroContent?: React.ReactNode;
+  readonly microContent?: React.ReactNode;
 }
 
 const DefaultMacro = () => (

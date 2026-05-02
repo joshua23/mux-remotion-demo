@@ -13,10 +13,11 @@ Config.overrideWebpackConfig((currentConfiguration) => {
           ? currentConfiguration.module.rules
           : []
         ).filter((rule) => {
-          if (rule === "...") {
+          if (rule === "..." || !rule || typeof rule !== 'object') {
             return false;
           }
-          if (rule.test?.toString().includes(".css")) {
+          const ruleObj = rule as { test?: unknown };
+          if (ruleObj.test?.toString().includes(".css")) {
             return false;
           }
           return true;
