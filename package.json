@@ -17,6 +17,8 @@
 		"@remotion/bundler": "4.0.355",
 		"@remotion/cli": "4.0.355",
 		"@remotion/eslint-config": "4.0.355",
+		"@remotion/media-utils": "^4.0.456",
+		"@remotion/paths": "^4.0.456",
 		"@remotion/renderer": "4.0.355",
 		"@types/express": "^4.17.9",
 		"@types/react": "^17.0.0",
@@ -26,6 +28,8 @@
 		"dotenv": "^10.0.0",
 		"eslint": "^7.15.0",
 		"express": "^4.17.1",
+		"js-yaml": "^4.1.1",
+		"papaparse": "^5.5.3",
 		"postcss": "^8.3.11",
 		"postcss-loader": "^6.2.0",
 		"postcss-preset-env": "^6.7.0",
@@ -39,7 +43,12 @@
 		"typescript": "4.4.2"
 	},
 	"devDependencies": {
+		"@types/js-yaml": "^4.0.9",
+		"@types/node": "^25.6.0",
+		"@types/papaparse": "^5.5.2",
 		"@types/react-simple-maps": "^1.0.6",
-		"axios": "^0.24.0"
+		"axios": "^0.24.0",
+		"tsx": "^4.21.0",
+		"vitest": "^4.1.5"
 	}
 }
