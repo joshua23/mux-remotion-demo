@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { mapCardToArchetype, buildTimeline } from './build-timeline';
+import { mapCardToArchetype, buildTimeline, generateTimeline } from './build-timeline';
 import type { OutlineCard } from './parse-gamma';
+import os from 'node:os';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 
 describe('mapCardToArchetype', () => {
   it('card 0 → TitleSpotlight', () => {
@@ -45,5 +48,25 @@ describe('buildTimeline', () => {
     expect(cards[0].durationFrames).toBe(135);
     // card 1: 4000ms = 120 frames + 45 post-roll = 165
     expect(cards[1].durationFrames).toBe(165);
+  });
+});
+
+describe('generateTimeline', () => {
+  it('generates Timeline.tsx with TitleSpotlight and durationFrames', async () => {
+    const outline: OutlineCard[] = [
+      { index: 0, title: '开场', body: '', narration: '旁白', rawHtml: '' },
+      { index: 1, title: '总结', body: '综合洞见', narration: '旁白二', rawHtml: '' },
+    ];
+    const manifest = [
+      { index: 0, mp3: 'card_00.mp3', durationMs: 3000, narration: '旁白' },
+      { index: 1, mp3: 'card_01.mp3', durationMs: 4000, narration: '旁白二' },
+    ];
+    const cards = buildTimeline(outline, manifest, 30);
+    const tmpPath = path.join(os.tmpdir(), `timeline-test-${Date.now()}.tsx`);
+    await generateTimeline(cards, '/audio', tmpPath);
+    const content = await fs.readFile(tmpPath, 'utf-8');
+    expect(content).toContain('TitleSpotlight');
+    expect(content).toContain('durationInFrames');
+    await fs.unlink(tmpPath);
   });
 });
