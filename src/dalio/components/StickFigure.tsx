@@ -1,69 +1,78 @@
 import React from 'react';
-import { useCurrentFrame } from 'remotion';
+import { useCurrentFrame, interpolate, spring, useVideoConfig } from 'remotion';
 import { COLORS, FONTS, STROKE } from '../theme';
-import {
-  CHARACTER_DECORATIONS,
-  CharacterKey,
-  STICK_FIGURE_PATHS,
-  StickFigurePose,
-} from '../utils/stickFigures';
+import { CHARACTERS, CharacterKey, StickFigurePose } from '../utils/stickFigures';
 
 interface StickFigureProps {
-  readonly pose?: StickFigurePose;
-  /** 角色身份；不同身份会叠加不同装饰（眼镜/长发/平头等），方便观众跨场景识别 */
+  /** 角色身份 — 不同的圆头 + 衬衫/裙子 + 头发组合 */
   readonly character?: CharacterKey;
-  /** 脚下显示的名字标签（如 "Joshua"、"NaNa"），不传则不显示 */
+  /** 姿势提示。当前所有 pose 都用同一组站立画法；保留接口，未来扩展用 */
+  readonly pose?: StickFigurePose;
+  /** 脚下名字标签 */
   readonly label?: string;
   readonly color?: string;
   readonly size?: number;
+  /** 是否做"轻微呼吸/晃动"动画 */
+  readonly animated?: boolean;
 }
 
 export const StickFigure: React.FC<StickFigureProps> = ({
-  pose = 'standing',
   character = 'generic',
+  pose, // eslint-disable-line @typescript-eslint/no-unused-vars
   label,
   color = COLORS.ink,
-  size = 80,
+  size = 200,
+  animated = true,
 }) => {
   const frame = useCurrentFrame();
-  // Walking animates between walking/standing at 2-frame intervals
-  const activePose =
-    pose === 'walking' ? (Math.floor(frame / 2) % 2 === 0 ? 'walking' : 'standing') : pose;
+  const { fps } = useVideoConfig();
 
-  const bodyPath = STICK_FIGURE_PATHS[activePose];
-  const decorationPath = CHARACTER_DECORATIONS[character];
+  // 微小的 idle 动画：身体在垂直方向呼吸式 ±0.5px，头部轻微 wobble
+  const breathe = animated
+    ? Math.sin(((frame % (fps * 3)) / (fps * 3)) * Math.PI * 2) * 0.4
+    : 0;
 
-  // viewBox 高度: 50 (body) + 12 (label area) = 62 if label, else 50
-  const labelHeight = label ? 12 : 0;
-  const viewBoxHeight = 50 + labelHeight;
+  const { body, decoration } = CHARACTERS[character];
+
+  const labelHeight = label ? 14 : 0;
+  const viewBoxHeight = 100 + labelHeight;
+  // viewBox 60×100；按高度等比缩放
+  const renderHeight = (size * viewBoxHeight) / 60;
 
   return (
-    <svg viewBox={`0 0 50 ${viewBoxHeight}`} width={size} height={size * (viewBoxHeight / 50)}>
-      <path
-        d={bodyPath}
-        stroke={color}
-        strokeWidth={STROKE.icon}
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      {decorationPath && (
+    <svg
+      viewBox={`0 0 60 ${viewBoxHeight}`}
+      width={size}
+      height={renderHeight}
+      style={{ overflow: 'visible' }}
+    >
+      <g transform={`translate(0, ${breathe})`}>
         <path
-          d={decorationPath}
+          d={body}
           stroke={color}
           strokeWidth={STROKE.icon}
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-      )}
+        {decoration && (
+          <path
+            d={decoration}
+            stroke={color}
+            strokeWidth={STROKE.icon}
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        )}
+      </g>
       {label && (
         <text
-          x="25"
-          y={50 + 9}
+          x="30"
+          y={100 + 11}
           textAnchor="middle"
           fontFamily={FONTS.body}
-          fontSize="6"
+          fontSize="7"
           fill={color}
           opacity={0.85}
         >
