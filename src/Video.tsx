@@ -16,6 +16,8 @@ import {
   Preview_Cycle,
   Preview_TimeSeries,
 } from './dalio/StudioPreviews';
+import { Chapter1_OpenLedger } from './dalio/scenes/Chapter1_OpenLedger';
+import { Chapter4_NotEngine } from './dalio/scenes/Chapter4_NotEngine';
 
 const FPS = 30;
 const W = 1920;
@@ -42,6 +44,10 @@ export const RemotionVideo: React.FC = () => {
       <Composition id="A-GrowBarTrio" component={Preview_GrowBarTrio} durationInFrames={90} fps={FPS} width={W} height={H} />
       <Composition id="A-SnapIcon" component={Preview_SnapIcon} durationInFrames={60} fps={FPS} width={W} height={H} />
       <Composition id="A-TitleSpotlight" component={Preview_TitleSpotlight} durationInFrames={150} fps={FPS} width={W} height={H} />
+
+      {/* === C-: Principles 章节场景（新）=== */}
+      <Composition id="C-Chapter1-OpenLedger" component={Chapter1_OpenLedger} durationInFrames={180} fps={FPS} width={W} height={H} />
+      <Composition id="C-Chapter4-NotEngine" component={Chapter4_NotEngine} durationInFrames={180} fps={FPS} width={W} height={H} />
 
       <Composition id="B-ConceptReveal" component={Preview_ConceptReveal} durationInFrames={120} fps={FPS} width={W} height={H} />
       <Composition id="B-Comparison" component={Preview_Comparison} durationInFrames={120} fps={FPS} width={W} height={H} />
