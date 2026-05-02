@@ -7,6 +7,20 @@ export interface AlipayTransaction {
   status: string; serviceFee: number; refunded: number; note: string; fundStatus: string;
 }
 
+export type ArchetypeName = 'ConceptReveal' | 'CauseEffect' | 'Comparison' | 'Cycle'
+  | 'TimeSeries' | 'Hierarchy' | 'MacroMicroZoom' | 'TitleSpotlight';
+
+export interface TimelineCard {
+  index: number; archetype: ArchetypeName;
+  title: string; body: string; narration: string;
+  durationFrames: number; audioPath?: string;
+  data?: Record<string, unknown>;
+}
+
+export interface ManifestEntry {
+  index: number; mp3: string; durationMs: number; narration: string;
+}
+
 export interface AggregatedFinance {
   rangeStart: string; rangeEnd: string; totalCount: number;
   totalExpense: number; totalIncome: number; totalNeutral: number; netOutflow: number;
