@@ -19,10 +19,15 @@
 - 总收入、总支出、净流出额
 - 储蓄率 = (总收入 - 总支出) / 总收入，保留 2 位小数
 
-### 维度 2：类目细分（含中国本土增强）
+### 维度 2：类目细分（含中国本土增强 + 家庭网络识别）
 - 按类目列出支出占比
 - 特别识别：余额宝/理财收益、12306/出行、亲情转账、同姓家庭节点
 - 标注主力消费类目（占比 > 20%）
+- **家庭网络识别**（关键，用于 Joshua 第一人称叙事）：
+  - 扫 `byMerchant` 和 Top 5 单笔，识别同姓节点（如多个张姓 → 张氏家庭网络）
+  - 对 `src/dalio/personas.ts` 中已登记的角色（NaNa(张娜)、燕燕(张春彦)、龙(张龙)、皆柏贸易），列出每人累计金额、笔数、首末交易日期
+  - 输出 `familyNetwork` 字段：`[{ counterparty, persona: "妻子|亲人|业务伙伴", totalAmount, txCount, firstDate, lastDate }]`
+  - 在 narrativeHooks 里**至少 1 条**围绕家庭分配（如"看似在花钱，实则把六成的钱交到了 NaNa 手里"）
 
 ### 维度 3：月度变异 + 异常事件检测
 - 月度支出均值、标准差
@@ -92,6 +97,7 @@
   "investmentPerformance": { "passiveTotal": 0.00, "estimatedAnnualRate": 0.00 },
   "cashFlowForecast": { "monthly": [{ "month": "YYYY-MM", "optimistic": 0.00, "neutral": 0.00, "pessimistic": 0.00 }] },
   "concentrationRisk": { "topMerchants": [], "topIncomeSources": [] },
+  "familyNetwork": [{ "counterparty": "...", "persona": "妻子|亲人|业务伙伴", "totalAmount": 0.00, "txCount": 0, "firstDate": "YYYY-MM-DD", "lastDate": "YYYY-MM-DD" }],
   "periodicity": { "salaryDay": null, "holidaySpikes": [], "recurringDebits": [] },
   "passiveActiveRatio": { "passive": 0.00, "active": 0.00, "passiveRatio": 0.00 },
   "fundLoopClosure": 0.00,
@@ -110,6 +116,9 @@
 示例：
 - "看似花了十六万，实则被动收益悄悄还回来了九成"
 - "看似支出稳定，实则三个月的异常消费掩盖了真实储蓄能力"
+- "看似在养家，实则六成的钱只是换了一个口袋——从我到 NaNa"
+
+**注意**：至少 1 条 hook 必须围绕**家庭网络**展开（参见维度 2），因为后续 Gamma 叙事是 Joshua 第一人称讲家庭账本，不是抽象的"机器"。
 
 ---
 
