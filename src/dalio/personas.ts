@@ -17,7 +17,7 @@ export interface Persona {
 }
 
 /**
- * 主角设定 — 全片以 Joshua 第一人称讲述
+ * 主角设定 — 全片以 Joshua（中文名张啸）第一人称讲述
  */
 export const PROTAGONIST: Persona = {
   character: 'joshua',
@@ -25,6 +25,9 @@ export const PROTAGONIST: Persona = {
   relation: 'self',
   narrativeAlias: '我',
 };
+
+/** 主角的中文实名（数据里的对手方"张啸"就是 Joshua 自己别处的账户） */
+export const PROTAGONIST_REAL_NAME = '张啸';
 
 /**
  * 家庭/业务网络
