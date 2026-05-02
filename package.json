@@ -8,6 +8,8 @@
 		"upgrade": "remotion upgrade",
 		"server": "ts-node server.tsx",
 		"test": "eslint src --ext ts,tsx,js,jsx && tsc",
+		"test:unit": "vitest run",
+		"test:watch": "vitest",
 		"hydrate": "ts-node ./src/scripts/hydrate.ts"
 	},
 	"repository": {},
