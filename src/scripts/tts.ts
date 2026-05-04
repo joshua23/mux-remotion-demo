@@ -49,18 +49,24 @@ function httpsPost(url: string, body: string, headers: Record<string, string>): 
   });
 }
 
-// Build MiniMax T2A v2 payload using string-key entries to avoid camelcase rule violations
+// Build MiniMax T2A v2 payload — voice_id MUST be inside voice_setting
+// (top-level voice_id triggers "invalid params, empty field" error 2013)
 function buildTtsPayload(text: string): string {
   const audioSetting = Object.fromEntries([
     ['format', 'mp3'],
     ['sample_rate', 32000],
     ['bitrate', 128000],
   ]);
+  const voiceSetting = Object.fromEntries([
+    ['voice_id', 'male-qn-jingying-jingpin'],
+    ['speed', 0.95],
+    ['vol', 1.0],
+    ['pitch', 0],
+  ]);
   const entries: Array<[string, unknown]> = [
     ['model', 'speech-02-hd'],
     ['text', text],
-    ['voice_id', 'male-qn-jingying-jingpin'],
-    ['speed', 0.95],
+    ['voice_setting', voiceSetting],
     ['audio_setting', audioSetting],
   ];
   return JSON.stringify(Object.fromEntries(entries));
