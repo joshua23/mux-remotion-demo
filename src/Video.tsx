@@ -23,6 +23,8 @@ import { PoseAnimatorScene } from './dalio/scenes/PoseAnimatorScene';
 import { Chapter1_Ledger } from './dalio/scenes/Chapter1_Ledger';
 import { Demo_FamilyTalk } from './dalio/scenes/Demo_FamilyTalk';
 import { ChapterScene } from './dalio/scenes/ChapterScene';
+import { ChapterSceneV2 } from './dalio/scenes/ChapterSceneV2';
+import { CH1_V2 } from './dalio/scenes/CH1_V2';
 import { DalioStoryTimeline } from './dalio/scenes/DalioStoryTimeline';
 import { CHAPTERS, TOTAL_FRAMES } from './dalio/scenes/chapters';
 import { staticFile } from 'remotion';
@@ -95,6 +97,16 @@ export const RemotionVideo: React.FC = () => {
           defaultProps={{ chapter }}
         />
       ))}
+      <Composition
+        id="Story-Ch1-V2"
+        component={ChapterSceneV2}
+        durationInFrames={CH1_V2.durationFrames}
+        fps={FPS}
+        width={W}
+        height={H}
+        defaultProps={{ chapter: CH1_V2 }}
+      />
+
       <Composition
         id="Z-PoseAnimator"
         component={PoseAnimatorScene}
