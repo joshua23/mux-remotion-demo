@@ -65,10 +65,10 @@ function extractPivot(g: Element): { x: number; y: number } {
 }
 
 function bboxFromChildAttrs(g: Element): { x: number; y: number } {
-  let minX = Infinity,
-    minY = Infinity,
-    maxX = -Infinity,
-    maxY = -Infinity;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
   g.querySelectorAll('[x][y]').forEach((el) => {
     const x = Number(el.getAttribute('x'));
     const y = Number(el.getAttribute('y'));
