@@ -4,15 +4,15 @@ import { GRAY } from '../clips/config';
 import { format } from 'date-fns';
 import MuxLogo from '../clips/MuxLogo';
 
-const DateRange = ({ children }: { children: React.ReactNode }) => (
+const DateRange = ({ children }: { readonly children: React.ReactNode }) => (
   <div className="text-mux-gray text-xl tracking-tight">{children}</div>
 )
 
-const Title = ({ children }: { children: React.ReactNode }) => (
+const Title = ({ children }: { readonly children: React.ReactNode }) => (
   <h1 className="text-gray-600 text-xl ml-20 flex-1 font-sans tracking-tight" style={{ color: GRAY }}>{children}</h1>
 )
 
-const Layout = ({ background, bodyClass, title, timeframe, children }: { background?: string, bodyClass?: string, title?: string, timeframe?: number[], children: React.ReactNode }) => {
+const Layout = ({ background, bodyClass, title, timeframe, children }: { readonly background?: string; readonly bodyClass?: string; readonly title?: string; readonly timeframe?: number[]; readonly children: React.ReactNode }) => {
   const frame = useCurrentFrame();
   const opacity = interpolate(frame, [0, 30], [0, 1]);
 

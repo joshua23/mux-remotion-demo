@@ -13,7 +13,7 @@ import data from "../data/unique_viewers_by_browser.json"
 import { formatNumber } from '../utils';
 
 // Passing index allows us to cascade the measurement animation
-const PieChart = ({ index, value, percentage }: { index: number, value: number, percentage: number }) => {
+const PieChart = ({ index, value, percentage }: { readonly index: number; readonly value: number; readonly percentage: number }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 

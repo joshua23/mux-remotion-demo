@@ -1,7 +1,7 @@
 import React from 'react';
 import { interpolate, useCurrentFrame } from 'remotion';
 
-const MuxLogo = (props) => {
+const MuxLogo = (props: React.SVGProps<SVGSVGElement>) => {
 
   const frame = useCurrentFrame();
   const opacity = interpolate(frame, [0, 30], [0, 1]);

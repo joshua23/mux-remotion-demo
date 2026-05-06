@@ -1,0 +1,66 @@
+[
+  {
+    "chapterId": "ch1",
+    "chapterNumber": 1,
+    "title": "账本翻开",
+    "mp3": "public/narration/ch1.mp3",
+    "durationMs": 6039,
+    "narration": "一年下来，我有一千八百三十五笔支付宝交易。今晚，我决定第一次把它们摊开看清楚。"
+  },
+  {
+    "chapterId": "ch2",
+    "chapterNumber": 2,
+    "title": "家是宇宙中心",
+    "mp3": "public/narration/ch2.mp3",
+    "durationMs": 6968,
+    "narration": "一半的钱，都流向了家。但流向家的哪一个角落？是 NaNa、是燕燕、是龙、是国法，还是孩子？"
+  },
+  {
+    "chapterId": "ch3",
+    "chapterNumber": 3,
+    "title": "NaNa 的小账本",
+    "mp3": "public/narration/ch3.mp3",
+    "durationMs": 8671,
+    "narration": "我以为 NaNa 的钱来自我每月的转账。错了。NaNa 用的是亲情卡 — 每天几十块的高频小额，加起来才是真相。"
+  },
+  {
+    "chapterId": "ch4",
+    "chapterNumber": 4,
+    "title": "这不是引擎",
+    "mp3": "public/narration/ch4.mp3",
+    "durationMs": 6039,
+    "narration": "我以为余额宝替我赚了十四万。其实呢？四百三十块。它不是发动机，只是一个停车位。"
+  },
+  {
+    "chapterId": "ch5",
+    "chapterNumber": 5,
+    "title": "通勤 8% 的代价",
+    "mp3": "public/narration/ch5.mp3",
+    "durationMs": 6348,
+    "narration": "8% 的钱，付给了交通。但更贵的是时间 — 那些路上的小时，也是从生命里扣出来的。"
+  },
+  {
+    "chapterId": "ch6",
+    "chapterNumber": 6,
+    "title": "业务的微光",
+    "mp3": "public/narration/ch6.mp3",
+    "durationMs": 6194,
+    "narration": "皆柏贸易，给了我 6.7% 的业务流水。不耀眼，但它是唯一一个我自己点燃的火苗。"
+  },
+  {
+    "chapterId": "ch7",
+    "chapterNumber": 7,
+    "title": "国法的红包",
+    "mp3": "public/narration/ch7.mp3",
+    "durationMs": 5419,
+    "narration": "国法长辈每年的红包来去，不在我的策略账本里 — 但它在另一本账上：礼。"
+  },
+  {
+    "chapterId": "ch8",
+    "chapterNumber": 8,
+    "title": "原则浮现",
+    "mp3": "public/narration/ch8.mp3",
+    "durationMs": 6194,
+    "narration": "十二个月翻完，浮出三条原则：先看清家、再造发动机、最后，把时间留给真正在意的人。"
+  }
+]

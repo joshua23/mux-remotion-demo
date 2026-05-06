@@ -4,6 +4,8 @@ dist
 
 # Ignore the output video from Git but not videos you import into src/.
 out
+!out/.gitkeep
 .env
 
 src/data/
+src/dalio/Timeline.generated.tsx
