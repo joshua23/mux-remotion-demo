@@ -280,3 +280,62 @@ LayeredCharacter → SVG <g> per part with transform
 - **pivot**：旋转锚点，决定该部位绕哪个点旋转
 - **CameraStage**：模拟摄像机推拉摇移的容器组件
 - **enter/exit**：角色进入/离开画面的过渡动画类型
+
+---
+
+## Phase 1 Outcome (2026-05-06)
+
+**Status:** Prototype rendered. Architecture validated end-to-end.
+
+**What shipped:**
+- `public/keypose-v2/joshua-desk-lean.svg` — auto-layered (no Inkscape) via
+  `tmp/spike/auto_layer.py`, color + bbox heuristics. 8 body-part `<g>` groups
+  + 8 `data-pivot-x/y` annotations + 98 silhouette/carve paths kept flat at
+  back to preserve Recraft's silhouette+carve render order.
+- `src/dalio/animation/{types,interpolatePart,parseLayeredSvg}.ts` — 12 vitest
+  cases pass.
+- `src/dalio/components/{LayeredCharacter,CameraStage}.tsx` — ref+cloneNode
+  injection, 3 vitest cases pass.
+- `src/dalio/scenes/{ChapterSceneV2,CH1_V2}.{tsx,ts}` + `Story-Ch1-V2`
+  composition wired in `src/Video.tsx`.
+- `out/ch1-v2-prototype.mp4` (3.2 MB), `out/ch1-v1-baseline.mp4` (5.0 MB),
+  side-by-side `out/ch1-compare.mp4` for visual diffing.
+
+**Visible result at the -8° head-turn peak (frame ~130):**
+Face features (eyes, glasses, mouth) rotate as a unit but the head silhouette
+stays static — small but noticeable misalignment of ear contour and hairline.
+At ≤3° (frames 0-90, 180-240) the artifact is invisible. The R-arm wrist
+wobble (±1°) and torso breathing scale (1.000-1.005) read as natural micro
+motion.
+
+**Decision: proceed to Phase 2 with one constraint adjustment.**
+
+The pipeline works. Per-part keyframes interpolate cleanly, the camera moves,
+chapter scaffolding is sound. The constraint we hit isn't architectural — it's
+that Recraft V4's silhouette+carve construction makes the *silhouette* a single
+unsplittable shape that doesn't move with its body part.
+
+**Two possible Phase 2 paths**, in order of preference:
+
+1. **(Preferred) Regenerate ch2-ch8 SVGs with a "clean part shapes" prompt.**
+   Ask Recraft for per-part filled shapes rather than silhouette+carve, then
+   the same auto-layer script gets a much cleaner result and angles up to ±15°
+   look natural. Keep `auto_layer.py` as the standard tool — manual Inkscape is
+   no longer required.
+
+2. **(Fallback) Keep current silhouette+carve SVGs, cap all keyframe angles
+   at ±4°.** Acceptable subtle motion; production-feel is "alive but stiff".
+
+**Phase 1 done criteria revisited:**
+
+- [x] `public/keypose-v2/joshua-desk-lean.svg` exists with 8 named groups
+- [x] All vitest tests pass (15/15 in `src/dalio/animation` + new components)
+- [ ] `npm test` passes — 415 *pre-existing* eslint errors on this branch
+      from before Phase 1 work (Demo_FamilyTalk.tsx, LottieTest.tsx, etc.).
+      My new code adds zero. tsc has 2 pre-existing Video.tsx errors,
+      unchanged. Honoring intent: my new files are clean.
+- [x] `Story-Ch1-V2` lists in `npx remotion compositions` and renders without
+      errors (3.2 MB, 8 sec).
+- [x] `out/ch1-v2-prototype.mp4` exists and shows visible per-part motion
+      (head turn, pen wobble, breathing).
+- [x] Decision recorded above.
